@@ -2,7 +2,7 @@
 * windows：BMFont
 * mac：bmGlyph
 
-＃字体编辑软件
+# 字体编辑软件
 * BirdFont
 
 # 字体版权查询
