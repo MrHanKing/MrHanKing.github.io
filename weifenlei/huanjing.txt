@@ -1,0 +1,67 @@
+
+开发环境
+命令行工具
+XCode CL Tool: `xcode-select --install`
+Homebrew: https://brew.sh/index_zh-cn
+Git: `brew install git`
+NVM: https://github.com/creationix/nvm#install-script
+Node.js: `nvm install v9`
+Yarn: `brew install yarn --without-node`
+桌面工具
+Chrome
+Safari
+Visual Studio Code
+Github Desktop
+网页开发
+Mysq: `brew install mysql && brew services start mysql`
+Redis: `brew install redis && brew services start redis`
+Cocos开发
+Cocos Creator 1.9.3
+XCode
+Android Studio
+
+推荐
+Spectacle Mac窗口管理软件
+https://www.spectacleapp.com/
+zsh + oh-my-zsh!
+`brew install zsh`
+https://github.com/robbyrussell/oh-my-zsh
+autojump: 
+`brew install autojump`
+https://github.com/wting/autojump
+
+
+配置Git的默认push行为
+
+git config --global push.default current
+配置SSH密匙
+
+https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
+passphrase留空即可
+Github
+把SSH密匙添加到Github账号
+
+https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+
+使用SSH地址进行git clone
+
+添加公司邮箱到Github （xxx@congmingpai.com）
+
+https://github.com/settings/emails
+Add email address 并验证邮箱
+配置Github提醒的邮箱地址
+
+https://github.com/settings/notifications
+修改 Default notification email 并保存
+把github.com添加到返垃圾邮件的白名单里
+
+Git工作流程
+从master开分支
+开发+提交修改（注意提交和当前分支相关的修改，不要不小心修改不相干的文件，容易造成不必要的conflict）
+push到github
+开Pull Request（PR）
+Assign给团队成员review
+CI会跑基础的代码检查
+Review没问题就可以合并了
+
+
