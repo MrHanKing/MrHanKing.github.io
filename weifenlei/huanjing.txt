@@ -45,8 +45,6 @@ https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
 
 使用SSH地址进行git clone
 
-添加公司邮箱到Github （xxx@congmingpai.com）
-
 https://github.com/settings/emails
 Add email address 并验证邮箱
 配置Github提醒的邮箱地址
