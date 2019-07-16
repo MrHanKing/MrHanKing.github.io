@@ -33,4 +33,11 @@ git config --global https.proxy socks5://127.0.0.1:1080
 1. 完成http(s) clone 提速部分的步骤。（其实可以不弄 但懒的挑内容了 就弄完上面4步吧 总不会错的）
 2. 首先你要生产ssh-key 并加到github的设置里面。自行谷歌
 3. 增加sshconfig文件。Mac环境 ssh client有两个配置文件，/etc/ssh/ssh_config和~/.ssh/config，前者是对所有用户，后者是针对某个用户，两个文件的格式是一样的。
-4. 个人
+4. 个人选择在~/.ssh/config配置，config文件开始时没有 自行创建。然后配置进内容
+```
+Host github.com
+User git
+ProxyCommand /usr/bin/nc -x 127.0.0.1:1086 %h %p    // 注意这里的1086端口 每个人不一样 你得看你的ss socks5走的哪个端口 修改成对应的
+IdentityFile ~/.ssh/id_rsa
+```
+5. 上面代码里的注释记得删。好了 应该没问题了。如果还不行 那我也不知道了 恭喜你踩了个更深的坑 :p
