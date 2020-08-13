@@ -1,6 +1,6 @@
 # 注意事项
 - [字体相关笔记](https://github.com/MrHanKing/MrHanKing.github.io/blob/master/useFont.md)
-- [自用英语词表]()
+- [自用英语词表](https://github.com/MrHanKing/MrHanKing.github.io/blob/master/weifenlei/WordList.md)
 
 # 备忘录
 
