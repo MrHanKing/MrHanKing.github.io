@@ -20,7 +20,7 @@ Editor.Ipc.sendToPanel("scene", "scene:new-property", {
   type: "EditorStyleVO",
 });
 ``` 
-- 改变一个属性为一个数组 看起来要先new-property改变类型 在set成一个数组 注意isSubProp
+- 改变一个属性为一个数组 看起来要先new-property改变类型 在set成一个数组 注意isSubProp（错误 这个版本属性会消失 原因Array在定义的时候需要给定类型 cocos的接口没找到可以改变数组内类型的）
 ``` 
 Editor.Ipc.sendToPanel("scene", "scene:set-property", {
   id: this.target.uuid.value, // curComponent.uuid,
