@@ -12,7 +12,7 @@ Editor.Ipc.sendToPanel("scene", "scene:set-property", {
   isSubProp: false,
 });
 ``` 
-- 改变一个属性的类型
+- 改变一个属性的类型（resultValue原本只给定了Object）
 ``` 
 Editor.Ipc.sendToPanel("scene", "scene:new-property", {
   id: this.target.uuid.value, // curComponent.uuid,
