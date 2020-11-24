@@ -108,3 +108,6 @@ function handleCompType(compData) {
 }
 ```
 
+# 不可见的数据操作节点树
+- 注意_objFlags这个属性 可以实现节点树在层级管理器里的隐藏。
+- 然后其他功能可以正常调ipc接口 如选择节点等
