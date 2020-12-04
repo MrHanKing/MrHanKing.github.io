@@ -1,0 +1,99 @@
+'use strict';
+
+let isSelectAsset = false;
+function hook_function(param1, param2, param3) {
+    let add = function () {
+        return param3(arguments), new param1(...arguments);
+    };
+    let obj = Object['getOwnPropertyNames'](param1);
+
+    for (let i of obj) {
+        const object = Object['getOwnPropertyDescriptor'](param1, i);
+
+        if (object['writable']) {
+            add[i] = param1[i];
+        }
+    }
+    Editor.log('结束');
+    return (add['prototype'] = param1['prototype']), add;
+}
+
+module.exports = {
+    load() {
+        Editor.log('start');
+        let ipc_listen_o = new Editor.IpcListener();
+        ipc_listen_o.on('selection:context', function () {
+            console.log(arguments, 'arguments');
+            if (arguments[1] == 'node') {
+                isSelectAsset = true;
+                //// curSelectAsset = arguments[2] ? Editor.assetdb.uuidToFspath(arguments[2]) : null;
+            } else {
+                isSelectAsset = false;
+            }
+        });
+
+        if (Editor['__hookedEditorMenu__'] != undefined) {
+            return;
+        }
+
+        Editor['__hookedEditorMenu__'] = true;
+
+        Editor.Menu = hook_function(Editor.Menu, {}, function (v_as) {
+            if (!isSelectAsset) {
+                return;
+            }
+            let template = [
+                {
+                    type: 'separator',
+                },
+                {
+                    label: '添加翻翻书游戏组件',
+                    submenu: [
+                        {
+                            label: '翻翻书封面',
+                            click: () => {
+                                Editor.Scene.callSceneScript('game-editor', 'addFfsGameModule', 0);
+                            },
+                        },
+                        {
+                            label: '翻翻书页数',
+                            click: () => {
+                                Editor.Scene.callSceneScript('game-editor', 'addFfsGameModule', 1);
+                            },
+                        },
+                        {
+                            label: '翻翻书对话框',
+                            click: () => {
+                                Editor.Scene.callSceneScript('game-editor', 'addFfsGameModule', 2);
+                            },
+                        },
+                    ],
+                },
+                {
+                    label: '生成数据',
+                    click: () => {
+                        Editor.log('点击 生成');
+                    },
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: '导入数据',
+                    click: () => {
+                        Editor.log('点击 导入');
+                    },
+                },
+            ];
+            console.log('v_as', v_as);
+            v_as[0].push(...template);
+        });
+    },
+
+    unload() {
+        // 当 package 被正确卸载的时候执行
+    },
+
+    messages: {
+    },
+};
