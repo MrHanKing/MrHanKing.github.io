@@ -41,3 +41,12 @@ ProxyCommand /usr/bin/nc -x 127.0.0.1:1086 %h %p    // 注意这里的1086端口
 IdentityFile ~/.ssh/id_rsa
 ```
 5. 上面代码里的注释记得删。好了 应该没问题了。如果还不行 那我也不知道了 恭喜你踩了个更深的坑 :p
+6. windows的配置 上面时mac的
+```
+Host github.com
+User git
+ProxyCommand "C:/Users/user/AppData/Local/Programs/Git/mingw64/bin/connect" -H 127.0.0.1:1087 %h %p
+IdentityFile "C:/Users/user/.ssh/id_rsa"
+TCPKeepAlive yes
+IdentitiesOnly yes
+```
