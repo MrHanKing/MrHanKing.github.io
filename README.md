@@ -7,6 +7,7 @@
 - [shader学习笔记](https://github.com/MrHanKing/MrHanKing.github.io/blob/master/openGL/study.md)
 - [UIManager 实现](https://github.com/MrHanKing/MrHanKing.github.io/blob/master/weifenlei/UIMgr.md)
 - [Bag 实现](https://github.com/MrHanKing/MrHanKing.github.io/blob/master/weifenlei/Bag.md)
+- [G3Sharp学习笔记](https://github.com/MrHanKing/MrHanKing.github.io/blob/master/G3Sharp/StudyBook.md)
 
 # cocos备忘录
 
