@@ -55,3 +55,11 @@
 * 暂时理解不了
 
 # 数据结构相关
+
+* 牺牲部分空间存储 减少计算复杂度。
+* DMesh3内记录:
+  * vertices: 顶点数据 
+  * triangles: 面片数据 Vec3 对应顶点的indexID
+  * edges: 边缘线数据 线数据 包含线的起点、终点2个顶点的IndexID，线连接的2个三角形面片的IndexID
+  * vertex_edge
+
