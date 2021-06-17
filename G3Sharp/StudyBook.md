@@ -61,5 +61,8 @@
   * vertices: 顶点数据 
   * triangles: 面片数据 Vec3 对应顶点的indexID
   * edges: 边缘线数据 线数据 包含线的起点、终点2个顶点的IndexID，线连接的2个三角形面片的IndexID
-  * vertex_edge
+  * vertex_edges: 顶点连接的所有边缘线的IndexID数组
+  * triangle_edges: 三角片面3条边对应的 边缘线IndexID
+* 法线、颜色、uv数据是可选的 可以通过DMesh3.EnableVertexNormals等类似借口开启
+* 支持序列化和反序列化gSerialization.Store() 和gSerialization.Restore()；
 
