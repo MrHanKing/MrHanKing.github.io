@@ -42,4 +42,16 @@
 
 # 卷绕数(Winding Numbers)
 
+* https://igl.ethz.ch/projects/winding-number/
+* 卷绕数理解还不是很清晰
+* 对于3D网格。只需在网格三角形上计算一个简单的函数，如果网格是闭合的，在网格内，你将得到一个整数，在网格外，你也将得到一个整数。
+* 例如：有闭合A模型 和 闭合B模型。则A和B外部的点的卷绕数为0，A内部但非B内部的点的卷绕数为1，A内部且B内部的点的卷绕数为2.
+* 非闭合边界的卷绕数为非整数。
+* 可以用 sharp.WindingNumber(position) > 0.5 来判断点在模型内部还是外部。
+* 可以用 F_Distance = -(sharp.FastWindingNumber(position) - 0.5); 计算隐式表面建模距离场
+
+## 面积估计和扫描表面重建(Area Estimates and Scan Surface Reconstruction)
+
+* 暂时理解不了
+
 # 数据结构相关
