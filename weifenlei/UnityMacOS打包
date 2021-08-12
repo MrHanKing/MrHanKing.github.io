@@ -62,7 +62,34 @@
 
 ## 公证
 
-*  
+*  后台同意苹果官方的各种协议
+*  把签名的待公证app打成zip包
+```
+/usr/bin/ditto -c -k --keepParent "xxxx.app " "xxxx.zip"
+```
+*  创建苹果官方文档说的AC_Access 方便后面使用。
+```
+xcrun altool --store-password-in-keychain-item "AC_KeyName" -u "apple id" -p "apple id非开发者平台登陆后生成的高级密钥"
+```
+*  获取自己的Providers, 拿到ProviderShortname
+```
+xcrun altool --list-providers -u "apple id" -p "@keychain:AC_KeyName" 
+```
+
+* 提交公证验证
+```
+xcrun altool --notarize-app --primary-bundle-id "开发者后台profile对应的Apple id" --username "apple id(就是账户邮箱)" --password "@keychain:AC_KeyName" --asc-provider "上面获取的拿到ProviderShortname" --file "需要公证的zip"
+```
+
+* 如果上一步成功, 等待2-3分钟 获取公证结果
+```
+xcrun altool --notarization-info "提交公证返回的RequestUUID" -u "apple id" -p "@keychain:AC_KeyName" 
+```
+
+* 给.app签入公证反馈
+```
+xcrun stapler staple 提交公证的app.app 
+```
 
 ## 验证命令
 
