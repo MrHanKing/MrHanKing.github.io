@@ -4,4 +4,4 @@
 - 首先看支持的功能：
   1. 多语言字符串支持
   2. 多语言资产支持，纹理、模型、音频等
-  3. 多语言数据(ScriptableObject 数据)和 Csv、GoogleSheets、XLIFF 的互相导出导入以及编辑。这点非常赞，可以省掉很多事情。
+  3. 多语言数据(ScriptableObject 数据)和 Csv、GoogleSheets、XLIFF 的互相导出导入以及编辑。这点非常赞，可以省掉很多事情。(对普通列暂未支持 需要自己扩展)
