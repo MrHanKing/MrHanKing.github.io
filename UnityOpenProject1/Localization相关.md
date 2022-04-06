@@ -13,10 +13,9 @@
 - XXXEntry: 继承自【TableEntry】，是每个格子具体存储的内容。
 - TableEntryReference: 具体【TableEntry】的引用，只记录了必要的 key 和 Type 在运行时去取内容。相当于一了数据对象 key 的作用(表格行 key 的作用)。
 - LocaleIdentifier: 身份标识。这里被用作了来记录对应语言的类型信息。同时作为了列的 key 使用
+- Locale: 用来存储语言的标识信息。例如对应的【LocaleIdentifier】等信息。
 
 # 扩展正常表格 统一数据配置
 
-## 1
-
-- Localization 系统使用 StringTableCollection 为数据单位来存储整个编辑器和运行时的总数据。 运行时使用对应的 Table 数据。
-- 所以第一步先扩展 NormalTableCollection 和 NormalTable
+- 考虑到 locale 作为引用数据 在多表之间可以省 title 的数据。但对一般表格来说不适用，一般表格的各自 Title 都不太一样，但可以参考实现资源列。
+- 采用【Unity-QuickSheet】开源库进行扩展。
