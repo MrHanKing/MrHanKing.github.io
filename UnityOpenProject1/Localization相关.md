@@ -11,9 +11,12 @@
 - XXXTableCollection: 继承自【LocalizationTableCollection】,是一张表格的整体数据容器 只在编辑器阶段存在。生成的数据不应该被打包出去
 - XXXTable: 继承自【DetailedLocalizationTable<TEntry>】，跟一列内容匹配，即一列内容存储为一个 Table。【TEntry】为【TableEntry】类型
 - XXXEntry: 继承自【TableEntry】，是每个格子具体存储的内容。
+- TableEntryData: 记录当个格子的额外数据
 - TableEntryReference: 具体【TableEntry】的引用，只记录了必要的 key 和 Type 在运行时去取内容。相当于一了数据对象 key 的作用(表格行 key 的作用)。
 - LocaleIdentifier: 身份标识。这里被用作了来记录对应语言的类型信息。同时作为了列的 key 使用
 - Locale: 用来存储语言的标识信息。例如对应的【LocaleIdentifier】等信息。
+- SharedTableData: 存储一列数据的 每行 key 数据
+- SharedTableEntry: 每行 key 数据
 
 # 扩展正常表格 统一数据配置
 
