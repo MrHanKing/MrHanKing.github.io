@@ -2,8 +2,8 @@
 
 - Unity 的 EventSystem 主要从三类脚本来看:
   1. EventSystem.cs: 处理输入、射线检测、发送事件的中心系统
-  2. XXXInputModule.cs: 输入模块具体的配置和输入处理
-  3. XXXRaycaster.cs: 射线检测的具体行为类
+  2. XXXInputModule.cs: 输入模块具体的配置和输入处理 以及事件行为
+  3. XXXRaycaster.cs: 射线检测的具体执行类
 
 ## EventSystem.cs 源码解读
 
@@ -141,5 +141,42 @@ public override void Raycast(PointerEventData eventData, List<RaycastResult> res
 
 // 根据Canvas设置获取对应的displayIndex 从Canvas上或Camera上取
 // 注意Display.RelativeMouseAt(eventData.position); 它转换出来的z值和displayIndex匹配 不匹配就不响应Raycast了
+// 注意Display是显示器的类 displays[0]特殊 始终返回桌面分辨率
+
+// 根据Blocking配置 计算UI被2D或3D物体遮挡时的 遮挡物距离 用于后面遮挡时候的逻辑
+
+// 进行eventPosition的Raycast测试。注意这里的pos坐标是ScreenPoint坐标 按需转换。然后得到该点的UI元素List
+// 1. 先检查cull 和 深度
+// 2. 检查UI的rectTransform是否包含ScreenPoint
+// 3. 若有摄像机 则检查Z深度
+// 4. 进行graphic的Raycast测试
+
+// 对取得的UI元素List进行 正反面的判断和屏幕距离的比较后 构建最后要返回的检测通过的UI元素数据 List<RaycastResult>
 }
 ```
+
+- 获得 Raycaster 结果后 事件的具体调用与否在 InputModule 这个行为类里处理。
+- GraphicRaycaster 注意属性:
+  1. Ignore Reversed Graphics:勾上(翻转到背面不能点击) 取消勾选(不管怎么翻转都能点击)
+  2. Blocked Objects: 有物体遮挡(3D or 2D 等)在 UI 前面，并且点击了遮挡部分的时候，是否应该忽略这次点击
+  3. Blocking Mask: Blocked Objects 匹配的层
+
+# input 输入
+
+- BaseInputModule 可以取到 input，会在自身所在节点上挂载 BaseInput 脚本。该脚本从 Engine 的 Input 中获取 Input 输入。
+- BaseInputModule 有 inputOverride 可以用来自定义 Input。
+
+# 关于 InputSystem 的
+
+- 老的方式用 Input 获取输入, InputModule 进行处理。
+- 新的 InputSystem 用 InputActionAsset 定义的所有外部设备的输入行为。UI 的 InputModule 使用 InputActionAsset 的 Action 替换 UI 的操作。所有的输入获取封装在了 InputSystem 内部 可以不用再自己获取了。
+- InputSystem 跟旧方式相比, 多了 InputActionAsset 设置和
+- 关于新的 InputSystem 如何实现 UI 操作杆功能, 这里有多种做法:
+  1. 方法一:
+  - UI 操作杆实现基础的逻辑后 去直接调用角色身上的数据层 改变移动数据等。
+  - 然后角色在 Update 的时候根据数据做出变化。同时角色身上可以挂载 PlayerInput 之类的 InputSystem 系统提供的脚本 同时响应硬件设备的输入
+  - 这个方法可以让 UI 操作杆和硬件输入同时起效，但可能不利于我们统一控制 以及需要耦合操作杆和角色等。
+  2. 方法二:
+  - 使用 InputActionAsset 的 Generate C#功能生成资源匹配的脚本(GameInput)。然后制作自己的 InputReader 脚本(可以是 ScriptableObject), 去 new GameInput() 并把自己设置为回调 同时实现对应的 callback 函数。以此来实现硬件设备的输入监听
+  - 同时 UI 操作杆的逻辑可以直接调用对应 InputReader 的 callback 函数，只需要伪造一份入参就可以了 而这份入参可以直接使用来自硬件设备的输入监听。
+  - 好处是输入设置和 callback 函数可以统一, 并且解耦。无需给角色和 UI 分别设置不同的脚本 使用同一份就可以了。
