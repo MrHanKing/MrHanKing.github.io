@@ -170,7 +170,7 @@ public override void Raycast(PointerEventData eventData, List<RaycastResult> res
 
 - 老的方式用 Input 获取输入, InputModule 进行处理。
 - 新的 InputSystem 用 InputActionAsset 定义的所有外部设备的输入行为。UI 的 InputModule 使用 InputActionAsset 的 Action 替换 UI 的操作。所有的输入获取封装在了 InputSystem 内部 可以不用再自己获取了。
-- InputSystem 跟旧方式相比, 多了 InputActionAsset 设置和
+- InputSystem 跟旧方式相比, 多了 InputActionAsset 设置和定制的 callback 监听。减少了 BaseInput 这类的 Input 处理。EventSystem、XXXInputModule、GraphicRaycaster 还是需要的 按需处理。
 - 关于新的 InputSystem 如何实现 UI 操作杆功能, 这里有多种做法:
   1. 方法一:
   - UI 操作杆实现基础的逻辑后 去直接调用角色身上的数据层 改变移动数据等。
