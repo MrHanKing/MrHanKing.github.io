@@ -1,0 +1,88 @@
+## 
+半透的特效通过RenderTexture渲染到UI上，显示不符合预期，例如透明的部分会显示成黑色等。  
+经过搜索找到3种解决方案：
+
+1. FairyGUIDemo提供的设置背景的方案。优点是不需要修改Shader，缺点是只能传入两张背景图，而且最底下的背景图需要是不透明的，否则透明部分就会显示黑色。Demo已经很详细，这里不再赘述。
+
+2. 小米超神的解决方案。优点是不限制特效显示在什么背景上，但是需要修改shader和不能渲染不透明的，例如模型
+
+3. lanr同学的方案。和小米超神方案原理一致，但是通过不同的混合因子，可以正常渲染模型和特效。
+
+## 出现问题的原因
+特效要显示到UI上面需要经过两步：
+1. 特效和摄像机背景混合渲染到RenderTexutre上。
+2. RenderTexture和UI背景混合显示出来。
+因为和场景上只需要混合一次不同，两次的混合会导致计算出来的结果不一样。 
+
+以Additive为例，混合因子是`Blend SrcAlpha One`
+```
+// 预期的结果
+expectColor = SrcColor*SrcAlpha + DstColor*1
+
+// 实际结果
+outColor = SrcRGB * SrcAlpha + DstRGB * 1
+outAlpha = SrcAlpha * SrcAlpha + DstAlpha * 1
+finalColor = outColor * outAlpha + UIColor * 1
+```
+可以看出预期结果和实际结果并不相等。
+
+## 解决方案
+下面结合特效的两种常用混合方式：AlphaBlend和Additive说明
+### 小米超神方案
+在此感谢小米超神的分享
+
++ AlphaBlend
+1. 摄像机背景颜色设置为(0,0,0,1)
+2. 特效Shader混合因子改为`Blend SrcAlpha OneMinusSrcAlpha,Zero OneMinusSrcAlpha`
+3. 持有RenderTexture的Image的Shader的混合因子改为：`Blend One Srcalpha`
+```
+// 预期的结果
+expectColor = SrcColor*SrcAlpha + DstColor*(1-SrcAlpha)
+// 实际结果
+outColor = SrcColor * SrcAlpha + DstColor*（1 - SrcAlpha） =  SrcColor * SrcAlpha 
+outAlpha = SrcAlpha * 0+ DstAlpha(1 - SraAlpha) = 1 - SrcAlpha
+finalColor = outColor*1 + BGColor*outAlpha 
+           = SrcColor*SrcAlpha + BGColor*(1-SrcAlpha)
+```
+
++ Additive
+1. 摄像机背景颜色设置为(0,0,0,1)
+2. 特效Shader混合因子改为`Blend SrcAlpha One,Zero One`
+3. 持有RenderTexture的Image的Shader的混合因子改为：`Blend One Srcalpha`
+```
+// 预期的结果
+expectColor = SrcColor*SrcAlpha + DstColor*1
+// 实际结果
+outColor = SrcColor * SrcAlpha + DstColor*1 =  SrcColor * SrcAlpha 
+outAlpha = SrcAlpha * 0 + DstAlpha * 1 = 1
+finalColor =  outColor * 1 + BGColor * outAlpha = SrcColor * SrcAlpha + BGColor
+```
+可以看出，持有RenderTexture的Image的Shader的混合因子是`Blend One Srcalpha`，所以里面有模型等不使用半透混合的Shader，SrcAlpha就是1，会和背景产生混合，产生预期外的半透的效果。
+
+### lanr同学的方案
+在此感谢lanr的分享
++ AlphaBlend
+1. 摄像机背景颜色设置为(0,0,0,0)
+2. 特效Shader混合因子改为`Blend SrcAlpha OneMinusSrcAlpha,One OneMinusSrcAlpha`
+3. 持有RenderTexture的Image的Shader的混合因子改为：`Blend One OneMinusSrcAlpha`
+```
+// 预期的结果
+expectColor = SrcColor*SrcAlpha + DstColor*(1-SrcAlpha)
+// 实际结果
+outColor = SrcColor*SrcAlpha + DstColor*(1-SrcAlpha) = SrcColor*SrcAlpha 
+outAlpha = SrcAlpha*1+ DstAlpha(1 - SraAlpha) = SraAlpha
+finalColor = outColor*1 + BGColor(1-outAlpha) = SrcColor*SrcAlpha + BGColor*(1- SrcAlpha)
+```
+
++ Additive
+1. 摄像机背景颜色设置为(0,0,0,0)
+2. 特效Shader混合因子改为`SrcAlpha One,Zero One`
+3. 持有RenderTexture的Image的Shader的混合因子改为：`Blend One OneMinusSrcAlpha`
+```
+// 预期的结果
+expectColor = SrcColor*SrcAlpha + DstColor*1
+// 实际结果
+outColor = SrcColor * SrcAlpha + DstColor*1 =  SrcColor * SrcAlpha 
+outAlpha = SrcAlpha * 0 + DstAlpha * 1 = 0
+finalColor = outColor*1 + BGColor*(1-outAlpha) = SrcColor*SrcAlpha + BGColor
+```
